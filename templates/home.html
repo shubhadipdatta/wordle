@@ -1,0 +1,161 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>MyWordle@TalkWithShubha</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}" />
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+  <script src="{% static 'js/myscripts.js' %}"></script>
+</head>
+
+
+<body onload="myGame()";>
+    <!-- Navingation Bar and Menu----------------------------------------------->
+    <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <!-- Navingation Bar Header-------------------------->
+        <div class="navbar-header">
+            <!-- Breadcrumbr toogle Icon-------------------------->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>                        
+            </button>
+            <!-- Brand logo -->
+            <a class="navbar-brand" href="home"><img src="{% static 'images/wordle_icon.png' %}" alt="My Wordle" width="70" height="30">@TalkWithShubha</a>
+        </div>
+        <!-- Navigation Collapsed Area ------- -->
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <!-- Navigation Menu Item -->
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="home"><i class="fa fa-home" aria-hidden="true"></i>Home</a></li>
+                <li><a href="rule"><i class="fa fa-question-circle" aria-hidden="true"></i>Rule</a></li>
+                <li><a href="about"><i class="fa fa-info-circle" aria-hidden="true"></i>About</a></li>
+                <li><a href="mailto:talkwithshubha@gmail.com" target="_blank"><i class="fa fa-address-card" aria-hidden="true"></i>Contact</a></li>
+            </ul>
+            <!-- Navigation Right Item -->
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"> </a></li>
+            </ul>
+        </div>
+    </div>
+    </nav>
+    <!------------------- End of Navingation Bar and Menu----------------------------------------------->
+    
+    <!-------- Main Page Container ----------------------------------------------------->
+    <div id="page-container">
+        <!------Wrapper Container ----------------->
+        <div class="container-fluid text-center">    
+        <div class="row content">
+            <!-- Left side pannel------->
+            <div class="col-sm-4 sidenav"></div>
+
+
+            <!------ Main pannel------------------->
+            <div class="col-sm-4 text-left" style="background-color:#ffffff;text-align:center;padding:10px; auto;">
+                <!--Timer/Display Result Section--> 
+                <div class="panel panel-primary" style="border-color:#500366;">
+                    <div class="panel-heading" style="padding:3px;background-color:#500366;border-color:#500366;">
+                        <div style="text-align:center" id="time">Time:00:00</div>
+                    </div>
+                    <div class="panel-body" style="font-family:verdana;" id="result">{{result}}</div>
+                </div>
+                
+                <!--Form Data------------->
+                <form action="" method="post">
+                    {% csrf_token %}
+                    
+                    <!--Wordle Word--------->
+                    <input type="hidden" class="form-control" id="word" name="word" value="{{word}}">
+                    <!-- Input Guess Word ----------->
+                    <div class="input-group"  >
+                        <input type="text" class="form-control" id="guess" placeholder="Guess the Word" name="guess" style="border-color:#11416a">
+                        <div class="input-group-btn">
+                            <button class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div><br>
+                    <!--Hidden data of the form--------->
+                    <input type="hidden" class="form-control" id="guess_count" name="guess_count" value="{{guess_count}}">
+                    <input type="hidden" class="form-control" id="guess1" name="guess1" value="{{guess1}}">
+                    <input type="hidden" class="form-control" id="guess2" name="guess2" value="{{guess2}}">
+                    <input type="hidden" class="form-control" id="guess3" name="guess3" value="{{guess3}}">
+                    <input type="hidden" class="form-control" id="guess4" name="guess4" value="{{guess4}}">
+                    <input type="hidden" class="form-control" id="guess5" name="guess5" value="{{guess5}}">
+                    <input type="hidden" class="form-control" id="guess6" name="guess6" value="{{guess6}}">
+                    <input type="hidden" class="form-control" id="start_time" name="start_time" value="{{start_time}}">
+                </form> 
+                
+                <!--Used/Unsed Letters Container--------->
+                <div style="display:flex;">
+                    <!--Used Letters section--------->
+                    <div class="panel panel-primary" style="flex: 1;margin-right:5px;border-color:#1bb9e9" >
+                        <div class="panel-heading" style="background-color:#1bb9e9;border-color:#1bb9e9;padding:3px;">Used Letters</div>
+                        <div class="panel-body" style="padding: 10px;" id="used_letters" >
+                                
+                        </div>
+                    </div>
+                    <!--Un-used Letters section--------->
+                    <div class="panel panel-primary" style="flex: 1;margin-right:5px;border-color:#a9a59e" >
+                        <div class="panel-heading" style="background-color:#a9a59e  ;border-color:#a9a59e;padding:3px;">Unused Letters</div>
+                        <div class="panel-body" style="padding: 10px;" id="unused_letters">
+                                
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary" style="border-color:#104583;" >
+                    <div class="panel-heading" style="padding:3px;background-color:#104583;border-color:#104583;">
+                        Attempts: {{guess_count}}/6 
+                        {% if guess_count == 0 %}
+                            <img src="{% static 'images/battery6.png' %}" alt="My Wordle" width="50" height="20">
+                        {% elif guess_count == 1 %}
+                            <img src="{% static 'images/battery5.png' %}" alt="My Wordle" width="50" height="20">
+                        {% elif guess_count == 2 %}
+                            <img src="{% static 'images/battery4.png' %}" alt="My Wordle" width="50" height="20">
+                        {% elif guess_count == 3 %}
+                            <img src="{% static 'images/battery3.png' %}" alt="My Wordle" width="50" height="20">
+                        {% elif guess_count == 4 %}
+                            <img src="{% static 'images/battery2.png' %}" alt="My Wordle" width="50" height="20">
+                        {% elif guess_count == 5 %}
+                            <img src="{% static 'images/battery1.png' %}" alt="My Wordle" width="50" height="20">
+                        {% else %}
+                            <img src="{% static 'images/battery0.png' %}" alt="My Wordle" width="50" height="20">
+                        {% endif %}
+                    
+                    </div>
+                    <div class="panel-body" style="padding: 10px;" >
+                        <p id="display"></p>
+                    </div>
+                </div>
+          
+            </div>...
+            <!------End of Main Pannel ----------------->
+        
+        
+            <!-- Right side pannel------->
+            <div class="col-sm-4 sidenav"></div>
+    
+    
+        </div>
+        </div>
+        <!------End of Wrapper Container ----------------->
+
+        <footer class="container-fluid text-center">
+        Wordle©TalkWithShubha
+        <a href="https://www.facebook.com/shubhadip.datta" target="_blank" class="fa fa-facebook"></a>
+        <a href="mailto:talkwithshubha@gmail.com" target="_blank" class="fa fa-envelope"></a>
+        <a href="https://in.linkedin.com/in/shubhadip-datta-11329482" target="_blank" class="fa fa-linkedin"></a>
+        <a href="https://github.com/shubhadipdatta" target="_blank" class="fa fa-github"></a>
+        </footer>
+    </div>
+    <!----------- End of Page Container------------------->
+
+</body>
+</html>

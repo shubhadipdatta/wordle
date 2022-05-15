@@ -1,0 +1,127 @@
+html, body {
+  margin:0;
+  padding:0;
+  height:100%;
+  background-color: rgb(255, 255, 255);
+}
+
+/* Remove the navbar's default margin-bottom and rounded borders */ 
+.navbar {
+  margin-bottom: 0;
+  border-radius: 0;
+  background-color: #1b354f;
+  color: white;
+}
+.navbar-brand {
+  float: left;
+  height: 50px;
+  padding: 5px 5px;
+  font-size: 10px;
+  color: #20a9ee;
+  line-height: 15px;
+}
+#page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+#container-fluid  {
+  padding-bottom: 40px;    /* Footer height */
+}
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {
+  
+  background-color: rgb(255, 255, 255);
+}
+
+/* Set gray background color and 100% height */
+.sidenav {
+  padding-top: 20px;
+  background-color: #ffffff;
+  height: 100%;
+}
+
+/* Set black background color, white text and some padding */
+footer {
+  background-color: rgb(32, 49, 92);
+  color: white;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40px; 
+}
+
+input[class="txt_box"]{
+  width:15%;
+  height:40px;
+  text-align: center;
+  border:1px dashed;
+  
+  animation: shake 0.2s ease-in-out 0s 2;
+  
+}
+
+@keyframes shake {
+  0% { margin-left: 0rem; }
+  25% { margin-left: 0.5rem; }
+  75% { margin-left: -0.5rem; }
+  100% { margin-left: 0rem; }
+}
+/* Social Media Icon Style and hover effect*/
+.fa {
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 15px;
+  width: 25px;
+  text-align: center;
+  text-decoration: none;
+ 
+}
+
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+}
+.fa-facebook:hover {
+    
+    background: #ffffff;
+    color: #3B5998;
+}
+
+.fa-linkedin {
+  background: #329fff;
+  color: #ffffff;
+}
+.fa-linkedin:hover {
+    background: #ffffff;
+    color: #329fff;
+}
+
+.fa-envelope {
+  background: #0faa4a;
+  color: #ffffff;
+}
+.fa-envelope:hover {
+    background: #ffffff;
+    color: #0faa4a;
+}
+.fa-github {
+  background: #ff2903;
+  color: #ffffff;
+}
+.fa-github:hover {
+    background: #ffffff;
+    color: #ff2903;
+}
+
+
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 500px) {
+  .sidenav {
+    height: auto;
+    padding: 10px;
+  }
+  .row.content {height:auto;} 
+}
+
